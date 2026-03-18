@@ -15,12 +15,18 @@ def parse():
     objects_list = soup.find_all("div", class_="objects-list")[0]
 
     with open("flats.xlsx", "w") as f:
+        f.write("Название;Стоимость;Вместимость;Площадь;")
+
         for card in objects_list.find_all("div", class_="card"):
             card_content = card.find("div", class_="card-content")
+            card_prices = card.find("div", class_="card-prices")
 
-            flat = card_content.find("a", class_="card-content__object-type").text
+            flat_name = card_content.find("a", class_="card-content__object-type").text
+            flat_price = card_prices.find("div", class_="card-prices__bottom").find("div", class_="price-order").find_all("span")[1].text
+            flat_capacity = card_content.find("div", class_="card-content__facilities").find("a").find("p").text.strip()
+            flat_area = card_content.find("div", class_="facilities__size").find("span").find("span").text
 
-            f.write(f"{flat};")
+            f.write(f"{flat_name};{flat_price};{flat_capacity};{flat_area};")
 
 
 if __name__ == "__main__":
