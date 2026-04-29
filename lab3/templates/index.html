@@ -1,0 +1,37 @@
+<!DOCTYPE html> 
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+        <form action="" method="post">
+            <label for="credit_sum">Стоимость недвижимости</label>
+            <br>
+            {% if error and error["credit_sum_error"] %}
+                <p style="color: red;">Неверное занчение:</p>
+            {% endif %}
+            <input type="text" id="credit_sum" name="credit_sum" placeholder="1 000 000">
+            <br>
+            <label for="monthly_rate">Ставка</lable>
+            <br>
+            {% if error and error["rate_error"] %}
+                <p style="color: red;">Неверное занчение:</p>
+            {% endif %}
+            <input type="text" id="rate" name="rate" placeholder="10.5">
+            <br>
+            <label for="years">Срок (в годах)</label>
+            <br>
+            {% if error and error["months_error"] %}
+                <p style="color: red;">Неверное занчение:</p>
+            {% endif %}
+            <input type="text" id="years" name="years" placeholder="15">
+            <br>
+            <input type="submit" value="Рассчитать">
+        </form>
+        <h2>Ежемесячный плятёж:</h2>
+        {% if ans is not none %}
+            <p>{{ans}}</p>
+        {% endif %}
+    </body>
+</html>
