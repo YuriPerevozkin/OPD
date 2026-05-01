@@ -11,7 +11,6 @@ def calculate_payment(credit_sum, rate, months):
 
 
 @app.route("/")
-@app.route("/index")
 def index():
     return render_template("index.html", error=None)
 
