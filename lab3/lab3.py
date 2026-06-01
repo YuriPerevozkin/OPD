@@ -7,7 +7,10 @@ app = Flask(__name__)
 def calculate_payment(credit_sum, rate, months):
     if credit_sum is None or rate is None or months is None:
         return
-    return credit_sum * ((rate * (1 + rate) ** months) / ((1 + rate) ** months - 1))
+    try:
+        return credit_sum * ((rate * (1 + rate) ** months) / ((1 + rate) ** months - 1))
+    except ZeroDivisionError:
+        return 0.0
 
 
 @app.route("/")
@@ -25,18 +28,27 @@ def form():
     if request.method == "POST":
         try:
             credit_sum = float(request.form.get("credit_sum"))
+            if credit_sum < 0:
+                error["credit_sum_error"] = True
+                credit_sum = None
         except ValueError:
             error["credit_sum_error"] = True
             credit_sum = None
 
         try:
             rate = float(request.form.get("rate")) / 12 / 100
+            if rate < 0:
+                error["rate_error"] = True
+                rate = None
         except ValueError:
             error["rate_error"] = True
             rate = None
 
         try:
             months = int(request.form.get("years")) * 12
+            if months < 0:
+                error["months_error"] = True
+                months = None
         except ValueError:
             error["months_error"] = True
             months = None
